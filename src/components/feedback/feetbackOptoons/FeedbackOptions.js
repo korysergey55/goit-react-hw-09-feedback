@@ -3,12 +3,17 @@ import { FeedbackContainer } from "./FeedbackOptionsStyled";
 import PropTypes, { arrayOf, string } from "prop-types";
 
 const FeedbackOptions = ({ state, onLeaveFeedback }) => {
-    
-   const callBack = (event) => onLeaveFeedback(event.target.name);
+ const submitFeedback = (event) => onLeaveFeedback(event.target.name);
  return (
   <FeedbackContainer>
    {state.map((option) => (
-    <button key={option} type="button" name={option} className={option} onClick={callBack}>
+    <button
+     key={option}
+     type="button"
+     name={option}
+     className={option}
+     onClick={submitFeedback}
+    >
      {option.toUpperCase()}
     </button>
    ))}

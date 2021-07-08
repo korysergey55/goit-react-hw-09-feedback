@@ -1,54 +1,51 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Section from "./section/Section";
 import FeedbackOptions from "./feetbackOptoons/FeedbackOptions";
 import Statistics from "./statistics/Statistics";
 
-class Feedback extends Component {
- state = {
-  good: 0,
-  neutral: 0,
-  bad: 0,
+const initialState = {
+ good: 0,
+ neutral: 0,
+ bad: 0,
+};
+
+const Feedback = () => {
+ const [state, setState] = useState(initialState);
+
+ const onLeaveFeedback = (name) => {
+  setState((prevState) => ({ ...prevState, [name]: prevState[name] + 1 }));
  };
 
- onLeaveFeedback = (scoreName) => {
-  this.setState((prevState) => {
-   const oldStateValue = prevState[scoreName];
-   return { [scoreName]: oldStateValue + 1 };
-  });
- };
-
- countTotalFeedback = () => {
-  const { good, neutral, bad } = this.state;
+ const countTotalFeedback = () => {
+  const { good, neutral, bad } = state;
   return good + neutral + bad;
-  
  };
 
- countPositiveFeedbackPercentage = () => {
-  const { good } = this.state;
-  const total = this.countTotalFeedback();
+ const countPositiveFeedbackPercentage = () => {
+  const { good } = state;
+  const total = countTotalFeedback();
   const positiveFeedback = Math.round((good / total) * 100);
   return positiveFeedback;
  };
 
- render() {
-  return (
-   <>
-    <Section title={"Please leave feedback"}>
-     <FeedbackOptions
-      state={Object.keys(this.state)}
-      onLeaveFeedback={this.onLeaveFeedback}
-     />
-    </Section>
+ return (
+  <>
+   <Section title={"Please leave feedback"}>
+    <FeedbackOptions
+     state={Object.keys(state)}
+     onLeaveFeedback={onLeaveFeedback}
+    />
+   </Section>
 
-    <Section title={"Statistics"}>
-     <Statistics
-      state={Object.entries(this.state)}
-      countTotalFeedback={this.countTotalFeedback}
-      countPositiveFeedbackPercentage={this.countPositiveFeedbackPercentage}
-     />
-    </Section>
-   </>
-  );
- }
-}
+   <Section title={"Statistics"}>
+    <Statistics
+     state={Object.entries(state)}
+     countTotalFeedback={countTotalFeedback}
+     countPositiveFeedbackPercentage={countPositiveFeedbackPercentage}
+    />
+   </Section>
+  </>
+ );
+};
+
 export default Feedback;
